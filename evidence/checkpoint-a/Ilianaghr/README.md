@@ -15,3 +15,24 @@ Le commit de fonctionnalité est `8f1e338`. La fusion dans `main` était fast-fo
 La fusion dans la branche personnelle est `df373b7`.
 Ne supprimer la branche de fonctionnalité qu’après capture et validation de l’enseignant.
 Aucune capture n’est présentée comme déjà réalisée. Aucun push effectué.
+
+## Capture guidée
+
+Ouvrir `Capturer_Checkpoint_A.command` à la racine du dépôt dans Terminal.
+Le script exécute réellement chaque commande, attend Entrée et ouvre la sélection
+macOS de capture. Sélectionner la zone du terminal trois fois. Les PNG sont
+sauvegardés directement ici avec les noms imposés. Aucune sortie n’est simulée.
+Le contrôle automatique de Terminal étant interdit dans cet environnement,
+les captures nécessitent cette intervention locale. Le script ne publie rien.
+
+## Explication à préparer pour la validation
+
+- `git branch` : l’astérisque marque la branche courante.
+- `git switch -c` crée une branche et s’y place.
+- `git diff main..feature/display-observation-dates` comparait les deux états avant fusion.
+- Le commit `8f1e338` était isolé sur la branche de fonctionnalité avant fusion.
+- La fusion fast-forward avance `main` jusqu’au commit existant ; elle reste valide avec un graphe linéaire.
+- `git branch --merged main` confirme que la fonctionnalité appartient à `main`.
+- Un conflit impose une décision humaine sur le contenu final ; l’exercice fabriqué est facultatif.
+- Après validation du professeur, `git branch -d feature/display-observation-dates`
+  supprime le nom local de la branche en conservant son commit dans l’historique.

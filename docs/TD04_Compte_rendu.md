@@ -56,6 +56,9 @@ Désormais, les fonctionnalités doivent être développées sur une branche dé
 
 Les sorties réelles sont conservées dans `TD04_Journal_commandes.txt`.
 Le dossier `evidence/checkpoint-a/Ilianaghr/` contient la préparation des captures.
+Le lanceur `Capturer_Checkpoint_A.command` exécute les commandes et guide leur capture
+native sur macOS. L’accès automatisé à Terminal est bloqué par l’outil de contrôle ;
+les captures demandent donc une intervention locale.
 Les trois captures PNG restent à prendre dans un vrai terminal ; le journal texte
 ne les remplace pas. Le contrat `docs/04_CHECKPOINTS_AND_EVIDENCE.md`, référencé
 par le sujet, est absent du dépôt cloné : les noms suivent le TD04 fourni.
