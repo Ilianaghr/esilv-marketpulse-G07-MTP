@@ -15,7 +15,7 @@ Ce dossier documente une collecte rétrospective des preuves après intégration
 
 ## Captures réalisées
 
-Les trois captures ont été réalisées localement par Antoine le 13 novembre 2026 avec `Capturer_Checkpoint_A_sendyourcode.command`, puis inspectées visuellement. Le lanceur est conservé à la racine du dépôt ; il exécute les commandes réellement et ouvre les sélections de capture macOS. Il ne modifie ni les branches, ni les commits, ni la configuration Git et ne publie rien.
+Les trois captures ont été réalisées par Antoine le 13 novembre 2026 et vérifiées visuellement. Elles présentent l’exécution du programme, l’état du dépôt et l’intégration de la branche de métadonnées.
 
 Les trois fichiers présents sont :
 
