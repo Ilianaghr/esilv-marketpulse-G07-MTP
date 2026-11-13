@@ -4,7 +4,7 @@ Projet : ESILV MarketPulse G07-MTP. Membre : Antoine Mai, compte GitHub `sendyou
 
 ## État documenté
 
-Ce dossier prépare une collecte rétrospective des preuves après intégration des TD05 et TD06, le 13 novembre 2026. Il décrit l'état réel du dépôt ; il ne présente pas ces captures comme prises à la fin du TD04.
+Ce dossier documente une collecte rétrospective des preuves après intégration des TD05 et TD06, le 13 novembre 2026. Il décrit l'état réel du dépôt ; il ne présente pas ces captures comme prises à la fin du TD04.
 
 - Base commune inspectée : `9be856c`.
 - Le programme affiche les dates `2026-09-01` / `2026-09-30` pour AAPL et SP500, avec 21 observations par série.
@@ -19,7 +19,7 @@ Les trois captures ont été réalisées localement par Antoine le 13 novembre 2
 
 Les trois fichiers présents sont :
 
-| Fichier | Contenu réel à montrer |
+| Fichier | Contenu montré |
 |---|---|
 | `01_terminal_python.png` | Exécution de `python3 src/main.py` depuis la racine. |
 | `02_git_status_log.png` | État actuel, historique et identité du commit `6d64010`. |
