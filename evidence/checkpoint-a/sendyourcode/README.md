@@ -13,11 +13,11 @@ Ce dossier prépare une collecte rétrospective des preuves après intégration 
 - Cette branche est effectivement intégrée dans `main`, via la PR nº 3 et le merge `692dcc5`, après revue. Ce travail a été produit dans le cadre du TD05 ; il fournit une trace réelle de branche et d'intégration.
 - Les commandes du journal sont rejouées sur la copie actuelle. Le dossier documente leur résultat technique ; la compréhension individuelle reste à vérifier.
 
-## Collecte à terminer
+## Captures réalisées
 
-Lancer `Capturer_Checkpoint_A_sendyourcode.command` à la racine du dépôt dans Terminal. Le lanceur exécute les commandes réellement et ouvre trois sélections de capture macOS. Il ne modifie ni les branches, ni les commits, ni la configuration Git et ne publie rien.
+Les trois captures ont été réalisées localement par Antoine le 13 novembre 2026 avec `Capturer_Checkpoint_A_sendyourcode.command`, puis inspectées visuellement. Le lanceur est conservé à la racine du dépôt ; il exécute les commandes réellement et ouvre les sélections de capture macOS. Il ne modifie ni les branches, ni les commits, ni la configuration Git et ne publie rien.
 
-Les trois fichiers à produire ici sont :
+Les trois fichiers présents sont :
 
 | Fichier | Contenu réel à montrer |
 |---|---|
@@ -25,7 +25,7 @@ Les trois fichiers à produire ici sont :
 | `02_git_status_log.png` | État actuel, historique et identité du commit `6d64010`. |
 | `03_branch_merge.png` | Branche personnelle listée comme fusionnée dans main et graphe de l'intégration. |
 
-Les PNG ne sont pas inclus dans la préparation initiale. Les créer dans un vrai terminal, vérifier leur lisibilité et leur contenu avant publication. Le journal texte joint complète les captures mais ne les remplace pas. Aucune capture d'un autre membre n'est réutilisée.
+Les trois PNG sont inclus, lisibles et cohérents avec le dépôt. La première capture montre le programme et les deux séries ; la deuxième montre le statut et le commit `6d64010` attribué à `sendyourcode` ; la troisième montre la branche de métadonnées déjà intégrée à `main`. Le fichier PNG non suivi visible dans le statut est la première capture en cours de collecte, pas une modification du code. Le journal texte complète ces captures. Aucune capture d'un autre membre n'est réutilisée.
 
 ## Points à expliquer pour la validation
 
