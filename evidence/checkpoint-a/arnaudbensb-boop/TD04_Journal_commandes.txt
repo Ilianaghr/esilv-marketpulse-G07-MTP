@@ -1,0 +1,349 @@
+TD04 — Arnaud Bensimhon — Journal des sorties reelles — 13 novembre 2026
+Reprise locale individuelle depuis la fin du TD03 ; aucune publication distante.
+
+1. Etat initial
+
+Cloning into 'outputs/MarketPulse-TD04-Arnaud'...
+Switched to a new branch 'main'
+Arnaud Bensimhon
+arnaud.bensb@gmail.com
+On branch main
+nothing to commit, working tree clean
+f7e3da5 docs: clarify sample execution and local Git verification
+8158300 docs: add TD03 local workflow report and command evidence
+52b4b39 Add files via upload
+839d779 Add files via upload
+ec7a8dc Complete TD02 Python CSV JSON processing
+  ArnaudBensimhon
+* main
+from pathlib import Path
+import csv
+import json
+
+
+DATA_DIR = Path("data/sample")
+
+# These starter values mirror config/settings.yml.
+# settings.yml is a human-readable configuration contract in the CORE.
+# Parsing YAML is optional and is not required by the 18-hour lab sequence.
+LOOKBACK_LABEL = "1 month"
+INTERVAL_LABEL = "Daily"
+
+
+def load_instruments():
+    with open(DATA_DIR / "instruments.json", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def load_prices():
+    with open(DATA_DIR / "prices.csv", encoding="utf-8") as file:
+        return list(csv.DictReader(file))
+
+
+def filter_prices(prices, ticker):
+    return [row for row in prices if row["ticker"] == ticker]
+
+
+def get_first_close(prices):
+    return float(prices[0]["close"])
+
+
+def get_last_close(prices):
+    return float(prices[-1]["close"])
+
+
+def display_market_summary(asset, prices, show_currency=True):
+    first_close = get_first_close(prices)
+    last_close = get_last_close(prices)
+
+    print(f"{asset['ticker']} - {asset['name']}")
+    print(f"Observations : {len(prices)}")
+
+    if show_currency:
+        print(f"First close  : {first_close:.2f} {asset['currency']}")
+        print(f"Last close   : {last_close:.2f} {asset['currency']}")
+    else:
+        print(f"First close  : {first_close:.2f}")
+        print(f"Last close   : {last_close:.2f}")
+
+
+def main():
+    instruments = load_instruments()
+    prices = load_prices()
+
+    instrument = instruments["instrument"]
+    benchmark = instruments["benchmark"]
+
+    instrument_prices = filter_prices(prices, instrument["ticker"])
+    benchmark_prices = filter_prices(prices, benchmark["ticker"])
+
+    print("=== MarketPulse ===")
+    print()
+
+    print("Market configuration")
+    print(f"Period   : {LOOKBACK_LABEL}")
+    print(f"Interval : {INTERVAL_LABEL}")
+    print()
+
+    print("Instrument")
+    display_market_summary(
+        instrument,
+        instrument_prices,
+        show_currency=True,
+    )
+
+    print()
+
+    print("Benchmark")
+    display_market_summary(
+        benchmark,
+        benchmark_prices,
+        show_currency=False,
+    )
+
+
+if __name__ == "__main__":
+    main()
+2. Creation de la branche
+
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First close  : 6600.00
+Last close   : 6742.00
+Switched to a new branch 'feature/display-observation-dates'
+  ArnaudBensimhon
+* feature/display-observation-dates
+  main
+
+3. Diff et execution sur la branche
+
+On branch feature/display-observation-dates
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/main.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+diff --git a/src/main.py b/src/main.py
+index aeefaea..48b4c35 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -34,12 +34,22 @@ def get_last_close(prices):
+     return float(prices[-1]["close"])
+
+
++def get_first_date(prices):
++    return prices[0]["date"]
++
++
++def get_last_date(prices):
++    return prices[-1]["date"]
++
++
+ def display_market_summary(asset, prices, show_currency=True):
+     first_close = get_first_close(prices)
+     last_close = get_last_close(prices)
+
+     print(f"{asset['ticker']} - {asset['name']}")
+     print(f"Observations : {len(prices)}")
++    print(f"First date   : {get_first_date(prices)}")
++    print(f"Last date    : {get_last_date(prices)}")
+
+     if show_currency:
+         print(f"First close  : {first_close:.2f} {asset['currency']}")
+@@ -85,4 +95,4 @@ def main():
+
+
+ if __name__ == "__main__":
+-    main()
+\ No newline at end of file
++    main()
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 6600.00
+Last close   : 6742.00
+
+4. Commit et comparaison avant fusion
+
+diff --git a/src/main.py b/src/main.py
+index aeefaea..48b4c35 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -34,12 +34,22 @@ def get_last_close(prices):
+     return float(prices[-1]["close"])
+
+
++def get_first_date(prices):
++    return prices[0]["date"]
++
++
++def get_last_date(prices):
++    return prices[-1]["date"]
++
++
+ def display_market_summary(asset, prices, show_currency=True):
+     first_close = get_first_close(prices)
+     last_close = get_last_close(prices)
+
+     print(f"{asset['ticker']} - {asset['name']}")
+     print(f"Observations : {len(prices)}")
++    print(f"First date   : {get_first_date(prices)}")
++    print(f"Last date    : {get_last_date(prices)}")
+
+     if show_currency:
+         print(f"First close  : {first_close:.2f} {asset['currency']}")
+@@ -85,4 +95,4 @@ def main():
+
+
+ if __name__ == "__main__":
+-    main()
+\ No newline at end of file
++    main()
+[feature/display-observation-dates a24cc31] feat: display first and last observation dates
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+On branch feature/display-observation-dates
+nothing to commit, working tree clean
+diff --git a/src/main.py b/src/main.py
+index aeefaea..48b4c35 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -34,12 +34,22 @@ def get_last_close(prices):
+     return float(prices[-1]["close"])
+
+
++def get_first_date(prices):
++    return prices[0]["date"]
++
++
++def get_last_date(prices):
++    return prices[-1]["date"]
++
++
+ def display_market_summary(asset, prices, show_currency=True):
+     first_close = get_first_close(prices)
+     last_close = get_last_close(prices)
+
+     print(f"{asset['ticker']} - {asset['name']}")
+     print(f"Observations : {len(prices)}")
++    print(f"First date   : {get_first_date(prices)}")
++    print(f"Last date    : {get_last_date(prices)}")
+
+     if show_currency:
+         print(f"First close  : {first_close:.2f} {asset['currency']}")
+@@ -85,4 +95,4 @@ def main():
+
+
+ if __name__ == "__main__":
+-    main()
+\ No newline at end of file
++    main()
+* a24cc31 (HEAD -> feature/display-observation-dates) feat: display first and last observation dates
+* f7e3da5 (origin/ArnaudBensimhon, main, ArnaudBensimhon) docs: clarify sample execution and local Git verification
+* 8158300 docs: add TD03 local workflow report and command evidence
+* 52b4b39 Add files via upload
+* 839d779 Add files via upload
+f7e3da5b9f59a93f2686a331eea30a51e47827e1
+a24cc31f0f467e1dac94678b849344527361b12c
+
+5. Retour main, execution avant fusion, fast-forward et validation finale
+
+Switched to branch 'main'
+  ArnaudBensimhon
+  feature/display-observation-dates
+* main
+On branch main
+nothing to commit, working tree clean
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First close  : 6600.00
+Last close   : 6742.00
+Updating f7e3da5..a24cc31
+Fast-forward
+ src/main.py | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+On branch main
+nothing to commit, working tree clean
+  ArnaudBensimhon
+  feature/display-observation-dates
+* main
+  ArnaudBensimhon
+  feature/display-observation-dates
+* main
+* a24cc31 (HEAD -> main, feature/display-observation-dates) feat: display first and last observation dates
+* f7e3da5 (origin/ArnaudBensimhon, ArnaudBensimhon) docs: clarify sample execution and local Git verification
+* 8158300 docs: add TD03 local workflow report and command evidence
+* 52b4b39 Add files via upload
+* 839d779 Add files via upload
+* ec7a8dc Complete TD02 Python CSV JSON processing
+commit a24cc31f0f467e1dac94678b849344527361b12c
+Author: Arnaud Bensimhon <arnaud.bensb@gmail.com>
+Date:   Fri Nov 13 18:22:05 2026 +0100
+
+    feat: display first and last observation dates
+
+ src/main.py | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 6600.00
+Last close   : 6742.00
