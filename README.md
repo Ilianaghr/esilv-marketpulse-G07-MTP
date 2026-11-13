@@ -204,6 +204,58 @@ These are the two canonical CORE runtime commands.
 
 The instructor starter repository does not necessarily contain every later-stage student file on day one. Files appear progressively during the lab sequence.
 
+### Verify the TD02 sample before a local commit
+
+Run `python src/main.py` from the repository root, the folder containing
+`src/` and `data/`. The sample file paths are relative to that folder.
+The TD02 program uses only the Python standard library.
+
+Both `data/sample/instruments.json` and `data/sample/prices.csv` are required.
+The supplied educational sample should display:
+
+| Series | Observations | First close | Last close |
+|---|---:|---:|---:|
+| AAPL | 21 | 250.00 USD | 266.20 USD |
+| SP500 | 21 | 6600.00 | 6742.00 |
+
+`get_first_close()` and `get_last_close()` convert CSV text to numbers.
+`display_market_summary()` reuses the same display logic for both series.
+
+### Inspect the local Git workflow (TD03)
+
+Before staging a change, check the configured author and inspect the working tree:
+
+```bash
+git config user.name
+git config user.email
+git status
+git diff
+```
+
+Stage only the intended file. For example, when changing this guide:
+
+```bash
+git add README.md
+git status
+git diff --staged
+```
+
+`git diff` shows unstaged changes; `git diff --staged` shows the exact changes
+selected for the next commit. Verify the program before committing, then read
+the resulting local history:
+
+```bash
+python src/main.py
+git commit -m "docs: clarify sample execution and local Git verification"
+git status
+git log --oneline -5
+git show HEAD
+```
+
+Only create a commit when an intended change is staged. If the TD02 Python work
+is already committed, inspect it with `git log --oneline -- src/main.py` and
+`git show <commit-id> -- src/main.py`. TD03 requires no push or Pull Request.
+
 ## Installation
 
 The starter TD01-TD02 path uses only the Python standard library.

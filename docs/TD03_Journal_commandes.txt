@@ -1,0 +1,375 @@
+TD03 — Journal des sorties réelles — 13 novembre 2026
+Dépôt : MarketPulse-TD03
+Branche : ArnaudBensimhon
+Les sections regroupent les commandes indiquées dans le compte rendu ; les diff vides n'émettent pas de texte.
+
+1. Identité, état initial, inspection du TD02 et exécution
+
+Switched to a new branch 'ArnaudBensimhon'
+branch 'ArnaudBensimhon' set up to track 'origin/ArnaudBensimhon'.
+git version 2.55.0.windows.5
+Arnaud Bensimhon
+arnaud.bensb@gmail.com
+On branch ArnaudBensimhon
+Your branch is up to date with 'origin/ArnaudBensimhon'.
+
+nothing to commit, working tree clean
+commit ec7a8dc7836cf4bb25daf5209a0b07b96ad35421
+Author: Arnaud Bensimhon <arnaud.bensb@gmail.com>
+Date:   Wed Oct 7 19:53:34 2026 +0200
+
+    Complete TD02 Python CSV JSON processing
+
+diff --git a/src/main.py b/src/main.py
+index 884b045..aeefaea 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -26,6 +26,29 @@ def filter_prices(prices, ticker):
+     return [row for row in prices if row["ticker"] == ticker]
+
+
++def get_first_close(prices):
++    return float(prices[0]["close"])
++
++
++def get_last_close(prices):
++    return float(prices[-1]["close"])
++
++
++def display_market_summary(asset, prices, show_currency=True):
++    first_close = get_first_close(prices)
++    last_close = get_last_close(prices)
++
++    print(f"{asset['ticker']} - {asset['name']}")
++    print(f"Observations : {len(prices)}")
++
++    if show_currency:
++        print(f"First close  : {first_close:.2f} {asset['currency']}")
++        print(f"Last close   : {last_close:.2f} {asset['currency']}")
++    else:
++        print(f"First close  : {first_close:.2f}")
++        print(f"Last close   : {last_close:.2f}")
++
++
+ def main():
+     instruments = load_instruments()
+     prices = load_prices()
+@@ -36,26 +59,30 @@ def main():
+     instrument_prices = filter_prices(prices, instrument["ticker"])
+     benchmark_prices = filter_prices(prices, benchmark["ticker"])
+
+-    instrument_latest = instrument_prices[-1]
+-    benchmark_latest = benchmark_prices[-1]
+-
+     print("=== MarketPulse ===")
+     print()
++
++    print("Market configuration")
++    print(f"Period   : {LOOKBACK_LABEL}")
++    print(f"Interval : {INTERVAL_LABEL}")
++    print()
++
+     print("Instrument")
+-    print(f"{instrument['ticker']} - {instrument['name']}")
+-    print(f"Last price: {instrument_latest['close']} {instrument['currency']}")
++    display_market_summary(
++        instrument,
++        instrument_prices,
++        show_currency=True,
++    )
++
+     print()
++
+     print("Benchmark")
+-    print(f"{benchmark['ticker']} - {benchmark['name']}")
+-    print(f"Last level: {benchmark_latest['close']}")
+-    print()
+-    print(f"Period: {LOOKBACK_LABEL}")
+-    print(f"Interval: {INTERVAL_LABEL}")
+-    print()
+-    print("Observations")
+-    print(f"{instrument['ticker']}: {len(instrument_prices)}")
+-    print(f"{benchmark['ticker']}: {len(benchmark_prices)}")
++    display_market_summary(
++        benchmark,
++        benchmark_prices,
++        show_currency=False,
++    )
+
+
+ if __name__ == "__main__":
+-    main()
++    main()
+\ No newline at end of file
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First close  : 6600.00
+Last close   : 6742.00
+
+
+2. Modification du README : status, status --short, diff --check, diff -- README.md
+
+On branch ArnaudBensimhon
+Your branch is up to date with 'origin/ArnaudBensimhon'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ M README.md
+diff --git a/README.md b/README.md
+index c6a17b9..d7aafc1 100644
+--- a/README.md
++++ b/README.md
+@@ -204,6 +204,58 @@ These are the two canonical CORE runtime commands.
+
+ The instructor starter repository does not necessarily contain every later-stage student file on day one. Files appear progressively during the lab sequence.
+
++### Verify the TD02 sample before a local commit
++
++Run `python src/main.py` from the repository root, the folder containing
++`src/` and `data/`. The sample file paths are relative to that folder.
++The TD02 program uses only the Python standard library.
++
++Both `data/sample/instruments.json` and `data/sample/prices.csv` are required.
++The supplied educational sample should display:
++
++| Series | Observations | First close | Last close |
++|---|---:|---:|---:|
++| AAPL | 21 | 250.00 USD | 266.20 USD |
++| SP500 | 21 | 6600.00 | 6742.00 |
++
++`get_first_close()` and `get_last_close()` convert CSV text to numbers.
++`display_market_summary()` reuses the same display logic for both series.
++
++### Inspect the local Git workflow (TD03)
++
++Before staging a change, check the configured author and inspect the working tree:
++
++```bash
++git config user.name
++git config user.email
++git status
++git diff
++```
++
++Stage only the intended file. For example, when changing this guide:
++
++```bash
++git add README.md
++git status
++git diff --staged
++```
++
++`git diff` shows unstaged changes; `git diff --staged` shows the exact changes
++selected for the next commit. Verify the program before committing, then read
++the resulting local history:
++
++```bash
++python src/main.py
++git commit -m "docs: clarify sample execution and local Git verification"
++git status
++git log --oneline -5
++git show HEAD
++```
++
++Only create a commit when an intended change is staged. If the TD02 Python work
++is already committed, inspect it with `git log --oneline -- src/main.py` and
++`git show <commit-id> -- src/main.py`. TD03 requires no push or Pull Request.
++
+ ## Installation
+
+ The starter TD01-TD02 path uses only the Python standard library.
+
+
+3. Sélection : add README.md, status, diff --staged --check, diff --staged, diff
+
+On branch ArnaudBensimhon
+Your branch is up to date with 'origin/ArnaudBensimhon'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   README.md
+
+diff --git a/README.md b/README.md
+index c6a17b9..d7aafc1 100644
+--- a/README.md
++++ b/README.md
+@@ -204,6 +204,58 @@ These are the two canonical CORE runtime commands.
+
+ The instructor starter repository does not necessarily contain every later-stage student file on day one. Files appear progressively during the lab sequence.
+
++### Verify the TD02 sample before a local commit
++
++Run `python src/main.py` from the repository root, the folder containing
++`src/` and `data/`. The sample file paths are relative to that folder.
++The TD02 program uses only the Python standard library.
++
++Both `data/sample/instruments.json` and `data/sample/prices.csv` are required.
++The supplied educational sample should display:
++
++| Series | Observations | First close | Last close |
++|---|---:|---:|---:|
++| AAPL | 21 | 250.00 USD | 266.20 USD |
++| SP500 | 21 | 6600.00 | 6742.00 |
++
++`get_first_close()` and `get_last_close()` convert CSV text to numbers.
++`display_market_summary()` reuses the same display logic for both series.
++
++### Inspect the local Git workflow (TD03)
++
++Before staging a change, check the configured author and inspect the working tree:
++
++```bash
++git config user.name
++git config user.email
++git status
++git diff
++```
++
++Stage only the intended file. For example, when changing this guide:
++
++```bash
++git add README.md
++git status
++git diff --staged
++```
++
++`git diff` shows unstaged changes; `git diff --staged` shows the exact changes
++selected for the next commit. Verify the program before committing, then read
++the resulting local history:
++
++```bash
++python src/main.py
++git commit -m "docs: clarify sample execution and local Git verification"
++git status
++git log --oneline -5
++git show HEAD
++```
++
++Only create a commit when an intended change is staged. If the TD02 Python work
++is already committed, inspect it with `git log --oneline -- src/main.py` and
++`git show <commit-id> -- src/main.py`. TD03 requires no push or Pull Request.
++
+ ## Installation
+
+ The starter TD01-TD02 path uses only the Python standard library.
+
+
+4. Commit, status, log --oneline -5, show HEAD, filtre auteur, exécution finale
+
+[ArnaudBensimhon f83b5f2] docs: clarify sample execution and local Git verification
+ 1 file changed, 52 insertions(+)
+On branch ArnaudBensimhon
+Your branch is ahead of 'origin/ArnaudBensimhon' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+f83b5f2 docs: clarify sample execution and local Git verification
+52b4b39 Add files via upload
+839d779 Add files via upload
+ec7a8dc Complete TD02 Python CSV JSON processing
+5207db8 first td session
+commit f83b5f2072ed8ed0cdeb090824f601c8ac1b0f46
+Author: Arnaud Bensimhon <arnaud.bensb@gmail.com>
+Date:   Fri Nov 13 17:30:02 2026 +0100
+
+    docs: clarify sample execution and local Git verification
+
+diff --git a/README.md b/README.md
+index c6a17b9..d7aafc1 100644
+--- a/README.md
++++ b/README.md
+@@ -204,6 +204,58 @@ These are the two canonical CORE runtime commands.
+
+ The instructor starter repository does not necessarily contain every later-stage student file on day one. Files appear progressively during the lab sequence.
+
++### Verify the TD02 sample before a local commit
++
++Run `python src/main.py` from the repository root, the folder containing
++`src/` and `data/`. The sample file paths are relative to that folder.
++The TD02 program uses only the Python standard library.
++
++Both `data/sample/instruments.json` and `data/sample/prices.csv` are required.
++The supplied educational sample should display:
++
++| Series | Observations | First close | Last close |
++|---|---:|---:|---:|
++| AAPL | 21 | 250.00 USD | 266.20 USD |
++| SP500 | 21 | 6600.00 | 6742.00 |
++
++`get_first_close()` and `get_last_close()` convert CSV text to numbers.
++`display_market_summary()` reuses the same display logic for both series.
++
++### Inspect the local Git workflow (TD03)
++
++Before staging a change, check the configured author and inspect the working tree:
++
++```bash
++git config user.name
++git config user.email
++git status
++git diff
++```
++
++Stage only the intended file. For example, when changing this guide:
++
++```bash
++git add README.md
++git status
++git diff --staged
++```
++
++`git diff` shows unstaged changes; `git diff --staged` shows the exact changes
++selected for the next commit. Verify the program before committing, then read
++the resulting local history:
++
++```bash
++python src/main.py
++git commit -m "docs: clarify sample execution and local Git verification"
++git status
++git log --oneline -5
++git show HEAD
++```
++
++Only create a commit when an intended change is staged. If the TD02 Python work
++is already committed, inspect it with `git log --oneline -- src/main.py` and
++`git show <commit-id> -- src/main.py`. TD03 requires no push or Pull Request.
++
+ ## Installation
+
+ The starter TD01-TD02 path uses only the Python standard library.
+f83b5f2 docs: clarify sample execution and local Git verification
+ec7a8dc Complete TD02 Python CSV JSON processing
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First close  : 6600.00
+Last close   : 6742.00
