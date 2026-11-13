@@ -16,15 +16,6 @@ La fusion dans la branche personnelle est `df373b7`.
 Ne supprimer la branche de fonctionnalité qu’après capture et validation de l’enseignant.
 Les trois captures sont présentes, lisibles et sans secret visible. Aucun push effectué.
 
-## Capture guidée
-
-Ouvrir `Capturer_Checkpoint_A.command` à la racine du dépôt dans Terminal.
-Le script exécute réellement chaque commande, attend Entrée et ouvre la sélection
-macOS de capture. Sélectionner la zone du terminal trois fois. Les PNG sont
-sauvegardés directement ici avec les noms imposés. Aucune sortie n’est simulée.
-Le contrôle automatique de Terminal étant interdit dans cet environnement,
-les captures ont été réalisées par intervention locale. Le script ne publie rien.
-
 ## Explication à préparer pour la validation
 
 - `git branch` : l’astérisque marque la branche courante.
