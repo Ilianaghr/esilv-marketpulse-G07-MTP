@@ -1,0 +1,124 @@
+TD04 — sorties réelles avant le commit de ce journal
+
+$ git status
+On branch ilianaghoorun
+Your branch is ahead of 'origin/ilianaghoorun' by 10 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+[exit 0]
+
+$ git branch
+  feature/display-observation-dates
+* ilianaghoorun
+  main
+[exit 0]
+
+$ git branch --merged main
+  feature/display-observation-dates
+  main
+[exit 0]
+
+$ git log --oneline --graph --decorate --all -20
+* 69ffbbe (HEAD -> ilianaghoorun) docs: explain TD04 branch workflow and checkpoint preparation
+*   df373b7 merge: integrate shared baseline and TD04 observation dates
+|\  
+| * 8f1e338 (main, feature/display-observation-dates) feat: display first and last observation dates
+* | 173e61d (origin/ilianaghoorun) Add files via upload
+* | 2b63277 Add files via upload
+| | * 6d64010 (origin/feature/display-market-metadata) feat: display market metadata
+| |/  
+| *   e4a856b (origin/main, origin/HEAD) Merge pull request #2 from Ilianaghr/ArnaudBensimhon
+| |\  
+| | * f7e3da5 (origin/ArnaudBensimhon) docs: clarify sample execution and local Git verification
+| | * 8158300 docs: add TD03 local workflow report and command evidence
+| | | * ad8bf2e (origin/preparation/team-baseline) docs: record current MarketPulse team information
+| | | * 92405fb chore: integrate existing TD02 work into proposed team baseline
+| | |/| 
+| |/|/  
+| | * 52b4b39 Add files via upload
+| | * 839d779 Add files via upload
+| | * ec7a8dc Complete TD02 Python CSV JSON processing
+| |/  
+|/|   
+| * c388ccd Add files via upload
+|/  
+* 5207db8 first td session
+* ba5c9f4 Update Readme
+* 9fd6c8a Update Readme
+* bfb94a6 init projecttemplate
+[exit 0]
+
+$ git show 8f1e338 -- src/main.py
+commit 8f1e33833eab60de4c1a73e7935d54b4fdead2c0
+Author: iliana <iliana.ghoorun@edu.devinci.fr>
+Date:   Fri Nov 13 17:48:01 2026 +0100
+
+    feat: display first and last observation dates
+
+diff --git a/src/main.py b/src/main.py
+index aeefaea..4c505ac 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -26,6 +26,14 @@ def filter_prices(prices, ticker):
+     return [row for row in prices if row["ticker"] == ticker]
+ 
+ 
++def get_first_date(prices):
++    return prices[0]["date"]
++
++
++def get_last_date(prices):
++    return prices[-1]["date"]
++
++
+ def get_first_close(prices):
+     return float(prices[0]["close"])
+ 
+@@ -40,6 +48,8 @@ def display_market_summary(asset, prices, show_currency=True):
+ 
+     print(f"{asset['ticker']} - {asset['name']}")
+     print(f"Observations : {len(prices)}")
++    print(f"First date   : {get_first_date(prices)}")
++    print(f"Last date    : {get_last_date(prices)}")
+ 
+     if show_currency:
+         print(f"First close  : {first_close:.2f} {asset['currency']}")
+@@ -85,4 +95,4 @@ def main():
+ 
+ 
+ if __name__ == "__main__":
+-    main()
+\ No newline at end of file
++    main()
+[exit 0]
+
+$ git diff main..feature/display-observation-dates
+[exit 0]
+
+$ git diff --check
+[exit 0]
+
+$ python3 src/main.py
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 6600.00
+Last close   : 6742.00
+[exit 0]
