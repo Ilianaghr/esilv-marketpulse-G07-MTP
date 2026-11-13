@@ -3,7 +3,7 @@
 Projet : ESILV MarketPulse G07-MTP. Branche personnelle : `ilianaghoorun`.
 Voir `docs/TD04_Compte_rendu.md` et le journal associé pour les manipulations exécutées.
 
-Les captures suivantes restent à effectuer depuis la racine du dépôt, dans un vrai terminal :
+Les captures suivantes ont été réalisées dans un vrai terminal le 13 novembre 2026 et vérifiées visuellement :
 
 - `01_terminal_python.png` : `python3 src/main.py`.
 - `02_git_status_log.png` : `git status` et `git log --oneline -5`.
@@ -14,7 +14,7 @@ La branche `feature/display-observation-dates` est conservée et fusionnée dans
 Le commit de fonctionnalité est `8f1e338`. La fusion dans `main` était fast-forward.
 La fusion dans la branche personnelle est `df373b7`.
 Ne supprimer la branche de fonctionnalité qu’après capture et validation de l’enseignant.
-Aucune capture n’est présentée comme déjà réalisée. Aucun push effectué.
+Les trois captures sont présentes, lisibles et sans secret visible. Aucun push effectué.
 
 ## Capture guidée
 
@@ -23,7 +23,7 @@ Le script exécute réellement chaque commande, attend Entrée et ouvre la séle
 macOS de capture. Sélectionner la zone du terminal trois fois. Les PNG sont
 sauvegardés directement ici avec les noms imposés. Aucune sortie n’est simulée.
 Le contrôle automatique de Terminal étant interdit dans cet environnement,
-les captures nécessitent cette intervention locale. Le script ne publie rien.
+les captures ont été réalisées par intervention locale. Le script ne publie rien.
 
 ## Explication à préparer pour la validation
 
