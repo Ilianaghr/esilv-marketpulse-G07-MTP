@@ -56,9 +56,6 @@ Désormais, les fonctionnalités doivent être développées sur une branche dé
 
 Les sorties réelles sont conservées dans `TD04_Journal_commandes.txt`.
 Le dossier `evidence/checkpoint-a/Ilianaghr/` contient le README et les trois captures PNG réalisées.
-Le lanceur `Capturer_Checkpoint_A.command` exécute les commandes et guide leur capture
-native sur macOS. L’accès automatisé à Terminal est bloqué par l’outil de contrôle ;
-les captures ont donc été réalisées par intervention locale.
 Les trois captures PNG ont été vérifiées visuellement : sortie Python, état Git et
 historique, puis branches et graphe de fusion. Le journal texte les complète. Le contrat `docs/04_CHECKPOINTS_AND_EVIDENCE.md`, référencé
 par le sujet, est absent du dépôt cloné : les noms suivent le TD04 fourni.
