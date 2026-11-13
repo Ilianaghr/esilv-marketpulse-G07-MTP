@@ -1,0 +1,88 @@
+Checkpoint A — sendyourcode
+Journal de contrôle réel, 13 novembre 2026.
+Collecte après TD06 ; ne décrit pas une exécution historique au TD04.
+
+$ git status
+On branch docs/checkpoint-a-sendyourcode
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	evidence/checkpoint-a/sendyourcode/
+
+nothing added to commit but untracked files present (use "git add" to track)
+[exit 0]
+
+$ git log --oneline -5
+9be856c Merge pull request #4 from Ilianaghr/feature/display-provider-label
+692dcc5 Merge pull request #3 from Ilianaghr/feature/display-market-metadata
+b6ee783 Merge pull request #5 from Ilianaghr/docs/clarify-sample-execution
+aa09537 docs: clarify sample execution and observation dates
+e7b4bf3 merge: integrate TD04 observation dates and checkpoint A evidence
+[exit 0]
+
+$ git show -s --format=%h %an %s 6d64010
+6d64010 sendyourcode feat: display market metadata
+[exit 0]
+
+$ git branch
+* docs/checkpoint-a-sendyourcode
+  feature/display-market-metadata
+  main
+  preparation/team-baseline
+[exit 0]
+
+$ git branch --merged main
+* docs/checkpoint-a-sendyourcode
+  feature/display-market-metadata
+  main
+  preparation/team-baseline
+[exit 0]
+
+$ git log --oneline --graph --decorate --simplify-by-decoration main feature/display-market-metadata -8
+*   9be856c (HEAD -> docs/checkpoint-a-sendyourcode, origin/main, origin/HEAD, main) Merge pull request #4 from Ilianaghr/feature/display-provider-label
+|\  
+| * 7bf62d3 (origin/feature/display-provider-label) feat: display CSV provider label
+* |   692dcc5 Merge pull request #3 from Ilianaghr/feature/display-market-metadata
+|\ \  
+| * | 6d64010 (origin/feature/display-market-metadata, feature/display-market-metadata) feat: display market metadata
+* | | aa09537 (origin/docs/clarify-sample-execution) docs: clarify sample execution and observation dates
+* | |   e7b4bf3 merge: integrate TD04 observation dates and checkpoint A evidence
+|\ \ \  
+| |_|/  
+|/| |   
+| * | 8b15ea7 (origin/ilianaghoorun) docs: complete checkpoint A with verified terminal screenshots
+| |/  
+* |   b0ac8aa Merge pull request #1 from Ilianaghr/preparation/team-baseline
+|\ \  
+| |/  
+|/|   
+[exit 0]
+
+$ git merge-base --is-ancestor 6d64010 main
+[exit 0]
+
+$ python3 -B src/main.py
+=== MarketPulse ===
+
+Market configuration
+Provider : CSV
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Market       : NASDAQ
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Market       : US
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 6600.00
+Last close   : 6742.00
+[exit 0]
