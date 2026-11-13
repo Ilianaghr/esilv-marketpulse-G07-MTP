@@ -221,6 +221,43 @@ The supplied educational sample should display:
 `get_first_close()` and `get_last_close()` convert CSV text to numbers.
 `display_market_summary()` reuses the same display logic for both series.
 
+### Run the sample on macOS or Linux (TD05)
+
+Open a terminal at the repository root, the folder containing `src/` and `data/`.
+If your Python 3 executable is named `python3`, run:
+
+```bash
+python3 --version
+python3 src/main.py
+```
+
+If `python --version` already reports Python 3, `python src/main.py` is also valid.
+No package installation or network connection is needed to run this CSV/JSON sample.
+The paths in `src/main.py` are relative to the repository root: running the program
+from inside `src/` will not find `data/sample/`.
+
+Since TD04, each series also displays its first and last observation dates:
+
+| Series | First date | Last date | Observations |
+|---|---|---|---:|
+| AAPL | 2026-09-01 | 2026-09-30 | 21 |
+| SP500 | 2026-09-01 | 2026-09-30 | 21 |
+
+The date helpers read the first and last rows of each filtered series. The supplied
+CSV is already ordered by date for each ticker; keep that order when editing it.
+These are fixed educational data, so the dates do not change with today's date.
+The program does not calculate returns at this stage.
+
+If execution reports `FileNotFoundError`, check the current directory and both
+required sample files before retrying:
+
+```bash
+pwd
+ls src/main.py data/sample/instruments.json data/sample/prices.csv
+python3 src/main.py
+```
+
+
 ### Inspect the local Git workflow (TD03)
 
 Before staging a change, check the configured author and inspect the working tree:
