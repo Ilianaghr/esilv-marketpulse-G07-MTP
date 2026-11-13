@@ -1,6 +1,7 @@
 Checkpoint A — sendyourcode
 Journal de contrôle réel, 13 novembre 2026.
 Collecte après TD06 ; ne décrit pas une exécution historique au TD04.
+Les espaces de fin de ligne du graphe sont supprimés pour la lecture.
 
 $ git status
 On branch docs/checkpoint-a-sendyourcode
@@ -39,22 +40,22 @@ $ git branch --merged main
 
 $ git log --oneline --graph --decorate --simplify-by-decoration main feature/display-market-metadata -8
 *   9be856c (HEAD -> docs/checkpoint-a-sendyourcode, origin/main, origin/HEAD, main) Merge pull request #4 from Ilianaghr/feature/display-provider-label
-|\  
+|\
 | * 7bf62d3 (origin/feature/display-provider-label) feat: display CSV provider label
 * |   692dcc5 Merge pull request #3 from Ilianaghr/feature/display-market-metadata
-|\ \  
+|\ \
 | * | 6d64010 (origin/feature/display-market-metadata, feature/display-market-metadata) feat: display market metadata
 * | | aa09537 (origin/docs/clarify-sample-execution) docs: clarify sample execution and observation dates
 * | |   e7b4bf3 merge: integrate TD04 observation dates and checkpoint A evidence
-|\ \ \  
-| |_|/  
-|/| |   
+|\ \ \
+| |_|/
+|/| |
 | * | 8b15ea7 (origin/ilianaghoorun) docs: complete checkpoint A with verified terminal screenshots
-| |/  
+| |/
 * |   b0ac8aa Merge pull request #1 from Ilianaghr/preparation/team-baseline
-|\ \  
-| |/  
-|/|   
+|\ \
+| |/
+|/|
 [exit 0]
 
 $ git merge-base --is-ancestor 6d64010 main
