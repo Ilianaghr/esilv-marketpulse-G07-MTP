@@ -186,23 +186,45 @@ calculate once
 present many times
 ```
 
-## Canonical runtime
+## Install and run MarketPulse (TD12)
 
-Terminal:
+MarketPulse compares Apple (`AAPL`) with the S&P 500 (`SP500`). The terminal
+and Dash dashboard show the same period returns, relative performance and
+base-100 comparison from `build_market_snapshot()`.
+
+From a shell on macOS or Linux with Git and Python 3 installed:
 
 ```bash
+git clone https://github.com/Ilianaghr/esilv-marketpulse-G07-MTP.git
+cd esilv-marketpulse-G07-MTP
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 python src/main.py
-```
-
-Dashboard, introduced in TD11:
-
-```bash
 python src/dashboard.py
 ```
 
-These are the two canonical CORE runtime commands.
+Run both commands from the repository root. Open the address printed by Dash
+(default [http://127.0.0.1:8050](http://127.0.0.1:8050/)) and stop the server
+with Ctrl+C when finished.
 
-The instructor starter repository does not necessarily contain every later-stage student file on day one. Files appear progressively during the lab sequence.
+The default source is **Bloomberg stage — APPROVED_SAMPLE**. Both commands
+use the included Bloomberg teaching fixture for a one-month daily comparison.
+Installing packages requires access to a package index. The default run then
+uses local files and requires no Bloomberg account or connection. The fixture
+does not establish live Bloomberg access.
+
+The reference fixture contains 21 common sessions from 1 to 30 September 2026.
+The expected returns are +6.48% for AAPL and +2.15% for the S&P 500, a difference
+of +4.33 percentage points. Both base-100 series start at 100.
+
+To use Yahoo Finance in the terminal, run `python src/main.py --provider yahoo`.
+This option requires network access to Yahoo Finance and uses a rolling window.
+
+### Historical checks (TD02–TD05)
+
+The following commands describe the earlier CSV/JSON version at those stages.
+For the current checkout, use the TD12 steps above.
 
 ### Verify the TD02 sample before a local commit
 
@@ -293,31 +315,18 @@ Only create a commit when an intended change is staged. If the TD02 Python work
 is already committed, inspect it with `git log --oneline -- src/main.py` and
 `git show <commit-id> -- src/main.py`. TD03 requires no push or Pull Request.
 
-## Installation
+## Runtime dependencies
 
-The starter TD01-TD02 path uses only the Python standard library.
+`requirements.txt` lists the project's direct dependencies:
 
-Later labs add direct dependencies as required.
+| Package | Used by |
+|---|---|
+| `yfinance` | Optional Yahoo Finance terminal path |
+| `dash` | Local dashboard server and layout |
+| `plotly` | Dashboard comparison chart |
 
-When `requirements.txt` contains the dependencies for the current stage:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Typical later-stage dependencies include:
-
-```text
-yfinance
-dash
-plotly
-```
-
-The complete dependency model, including standard-library modules, transitive dependencies, Bloomberg environment rules and explicit CORE exclusions, is documented in:
-
-[MarketPulse libraries and dependencies](docs/13_MARKETPULSE_LIBRARIES_AND_DEPENDENCIES.md)
-
-Do not add packages that are not actually required by the implementation.
+The Bloomberg teaching sample uses Python's standard library for loading and
+normalization. Dependency installation is covered in the [TD12 setup](#install-and-run-marketpulse-td12).
 
 ## Bloomberg teaching modes
 
@@ -344,7 +353,7 @@ LIVE Bloomberg evidence
 Instructor reference:
 
 ```text
-docs/10_BLOOMBERG_INSTRUCTOR_REFERENCE.md
+labs/10_BLOOMBERG_INSTRUCTOR_REFERENCE.md
 ```
 
 ## Student Git workflow
@@ -446,7 +455,9 @@ Integration and Release
 
 The canonical evidence specification is:
 
-[Checkpoint and evidence contract](docs/04_CHECKPOINTS_AND_EVIDENCE.md)
+- [Evidence folders](evidence/README.md)
+- [Individual Checkpoint C evidence](evidence/checkpoint-c/)
+- [TD12 capture checklist](labs/TD12_INTEGRATION_AND_RELEASE.md#part-14---capture-checklist)
 
 Screenshots complement Git history, execution and explanation. They do not replace them.
 
