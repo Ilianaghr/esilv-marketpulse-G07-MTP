@@ -1,4 +1,5 @@
 from pathlib import Path
+import argparse
 import csv
 import json
 
@@ -8,7 +9,7 @@ from analytics import (
     calculate_period_return,
     calculate_relative_performance,
 )
-from providers.yahoo_provider import fetch_yahoo_prices
+from providers.bloomberg_provider import fetch_approved_sample_prices
 
 
 DATA_DIR = Path("data/sample")
@@ -18,7 +19,8 @@ DATA_DIR = Path("data/sample")
 # Parsing YAML is optional and is not required by the 18-hour lab sequence.
 LOOKBACK_LABEL = "1 month"
 INTERVAL_LABEL = "Daily"
-PROVIDER_LABEL = "Yahoo Finance via yfinance"
+BLOOMBERG_SAMPLE_LABEL = "Bloomberg stage - APPROVED_SAMPLE"
+YAHOO_LABEL = "Yahoo Finance via yfinance"
 
 
 def load_instruments():
@@ -81,61 +83,89 @@ def display_market_summary(asset, prices, show_currency=True):
         print(f"Last close   : {last_close:.2f}")
 
 
-def main():
+def build_market_snapshot(provider="bloomberg"):
+    """Acquire and compare the two series for terminal and dashboard consumers."""
     instruments = load_instruments()
 
     instrument = instruments["instrument"]
     benchmark = instruments["benchmark"]
 
-    instrument_prices = fetch_yahoo_prices(instrument["ticker"])
-    benchmark_prices = fetch_yahoo_prices(benchmark["ticker"])
+    tickers = (instrument["ticker"], benchmark["ticker"])
+    if provider == "bloomberg":
+        prices = fetch_approved_sample_prices(tickers)
+        provider_label = BLOOMBERG_SAMPLE_LABEL
+    elif provider == "yahoo":
+        from providers.yahoo_provider import fetch_yahoo_prices
+
+        prices = {ticker: fetch_yahoo_prices(ticker) for ticker in tickers}
+        provider_label = YAHOO_LABEL
+    else:
+        raise ValueError(f"Unsupported provider: {provider}")
 
     aligned_instrument, aligned_benchmark = align_series(
-        instrument_prices, benchmark_prices
+        prices[instrument["ticker"]], prices[benchmark["ticker"]]
     )
     if not aligned_instrument:
-        raise SystemExit("No common dates between the instrument and benchmark.")
+        raise ValueError("No common dates between the instrument and benchmark.")
 
     instrument_return = calculate_period_return(aligned_instrument)
     benchmark_return = calculate_period_return(aligned_benchmark)
-    relative_performance = calculate_relative_performance(
-        instrument_return, benchmark_return
-    )
-    instrument_base_100 = calculate_base_100(aligned_instrument)
-    benchmark_base_100 = calculate_base_100(aligned_benchmark)
+    return {
+        "provider": provider_label,
+        "lookback": LOOKBACK_LABEL,
+        "interval": INTERVAL_LABEL,
+        "instrument": instrument,
+        "benchmark": benchmark,
+        "instrument_prices": aligned_instrument,
+        "benchmark_prices": aligned_benchmark,
+        "instrument_return": instrument_return,
+        "benchmark_return": benchmark_return,
+        "relative_performance": calculate_relative_performance(
+            instrument_return, benchmark_return
+        ),
+        "instrument_base_100": calculate_base_100(aligned_instrument),
+        "benchmark_base_100": calculate_base_100(aligned_benchmark),
+    }
+
+
+def display_market_snapshot(snapshot):
+    instrument = snapshot["instrument"]
+    benchmark = snapshot["benchmark"]
+    instrument_base_100 = snapshot["instrument_base_100"]
+    benchmark_base_100 = snapshot["benchmark_base_100"]
 
     print("=== MarketPulse ===")
     print()
 
     print("Market configuration")
-    print(f"Provider : {PROVIDER_LABEL}")
-    print(f"Period   : {LOOKBACK_LABEL}")
-    print(f"Interval : {INTERVAL_LABEL}")
+    print(f"Provider : {snapshot['provider']}")
+    print(f"Period   : {snapshot['lookback']}")
+    print(f"Interval : {snapshot['interval']}")
     print()
 
     print("Instrument")
     display_market_summary(
         instrument,
-        aligned_instrument,
+        snapshot["instrument_prices"],
         show_currency=True,
     )
-    print(f"Period return: {instrument_return:.2f}%")
+    print(f"Period return: {snapshot['instrument_return']:.2f}%")
 
     print()
 
     print("Benchmark")
     display_market_summary(
         benchmark,
-        aligned_benchmark,
+        snapshot["benchmark_prices"],
         show_currency=False,
     )
-    print(f"Period return: {benchmark_return:.2f}%")
+    print(f"Period return: {snapshot['benchmark_return']:.2f}%")
 
     print()
     print("Relative performance")
     print(
         f"{instrument['ticker']} vs {benchmark['ticker']} : "
-        f"{relative_performance:+.2f} percentage points"
+        f"{snapshot['relative_performance']:+.2f} percentage points"
     )
 
     print()
@@ -148,6 +178,22 @@ def main():
         f"{benchmark['ticker']} : "
         f"{benchmark_base_100[0]['value']:.2f} -> {benchmark_base_100[-1]['value']:.2f}"
     )
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Compare the MarketPulse series.")
+    parser.add_argument(
+        "--provider",
+        choices=("bloomberg", "yahoo"),
+        default="bloomberg",
+        help="use the approved Bloomberg sample (default) or Yahoo Finance",
+    )
+    args = parser.parse_args(argv)
+    try:
+        snapshot = build_market_snapshot(args.provider)
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
+    display_market_snapshot(snapshot)
 
 
 if __name__ == "__main__":
